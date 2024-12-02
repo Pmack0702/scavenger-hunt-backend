@@ -1,5 +1,5 @@
 const express = require('express');
-const POI = require('./models/POI'); // Imported POI Model
+const POI = require('../../models/POI'); // Imported POI Model
 
 const router = express.Router();
 
@@ -35,8 +35,9 @@ router.post('/pois', async (req, res) => {
     endpoint upates a POI details with a specific ID
     It takes the updated data from the request body and ID from the parameter and return the updated POI
 */
-router.post('/pois/:id', async (req, res) => {
-    const { pid } = req.params.id;
+router.put('/pois/:pid', async (req, res) => {
+    const { pid } = req.params;
+    console.log(pid)
     const updateddata = req.body; // get the updated data
     try{
         const updatedPOI = await POI.findByIdAndUpdate(pid, updateddata, { new: true }); // FInd the POI and update it
@@ -46,7 +47,7 @@ router.post('/pois/:id', async (req, res) => {
             res.status(404).json({message: 'POI Not Found'})
         }
     }catch(error){
-        res.status(500).json({ message: 'Error updating POI', error });    }
+        res.status(500).json({ message: 'Error updating POI ', error });    }
 
     });
 
@@ -54,8 +55,8 @@ router.post('/pois/:id', async (req, res) => {
     This endpoint Delete the POI from the Database using the id
     It returns a 204 status if successful, and 404 if the POI isn't found.
 */
-router.delete('/pois/:id', async (req, res) => {
-    const { pid } = req.params.id;
+router.delete('/pois/:pid', async (req, res) => {
+    const { pid } = req.params;
     try{
         const deletedPOI = await POI.findByIdAndDelete(pid); // FInd the POI and Delete it
         if(deletedPOI){
@@ -67,4 +68,6 @@ router.delete('/pois/:id', async (req, res) => {
         res.status(500).json({ message: 'Error deleted POI', error });    }
 
     });
+
+
 module.exports = router;

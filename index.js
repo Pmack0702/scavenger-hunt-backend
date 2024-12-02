@@ -4,8 +4,8 @@ const cors = require('cors'); // Import CORS to handle cross-origin resource sha
 const dotenv = require('dotenv'); // dotenv to load environment variables
 dotenv.config(); // Load variables from .env file
 
-const poiRoutes = require('./models/POI');
-const teamRoutes =  require('./models/Team')
+const poiRoutes = require('./routes/POImanagement/POImanagement');
+const teamRoutes = require('./routes/TeamManagement/teammanagement');
 
 const SERVER_PORT = process.env.port || 3000;
 const MONGO_URI = process.env.MONGO_URI;
@@ -27,7 +27,8 @@ mongoose.connect(MONGO_URI, {
 
 
 app.use('/api/v1', poiRoutes);
-app.use('/api/v1', teamRoutes)
+app.use('/api/v1/', teamRoutes);
+// app.use('/api/v1', teamRoutes)
 
 app.listen(SERVER_PORT, () => {
     console.log("The server is running is on port 3000")
