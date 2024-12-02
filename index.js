@@ -27,7 +27,7 @@ mongoose.connect(MONGO_URI, {
 
 
 app.use('/api/v1', poiRoutes);
-app.use('/api/v1/', teamRoutes);
+app.use('/api/v1', teamRoutes);
 // app.use('/api/v1', teamRoutes)
 
 app.listen(SERVER_PORT, () => {
