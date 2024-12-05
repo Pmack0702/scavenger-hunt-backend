@@ -79,6 +79,15 @@ router.delete('/:id/members/:memberid', async (req, res) => {
     }
 });
 
-
+// Get Leaderboard: All Teams sorted by score
+router.get('/leaderboard', async (req, res) => {
+    try {
+      const teams = await Team.find().sort({ score: -1 }); // Sort teams by score in descending order
+      res.status(200).json({ message: 'Leaderboard fetched successfully', teams });
+    } catch (error) {
+      console.error('Error fetching leaderboard:', error);
+      res.status(500).json({ message: 'Error fetching leaderboard', error: error.message });
+    }
+  });
 
 module.exports = router;

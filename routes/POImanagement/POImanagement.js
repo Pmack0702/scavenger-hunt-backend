@@ -117,6 +117,41 @@ router.put('/pois/:pid/team', async (req, res) => {
       res.status(500).json({ message: 'Server error', error: error.message });
     }
   });
+
+
+  router.put('/pois/:pid/complete', async (req, res) => {
+    const { pid } = req.params;
+    const { teamId, scoreIncrement } = req.body;
+  
+    try {
+      // Find and update the POI to mark it as completed
+      const poi = await POI.findById(pid);
+      if (!poi) {
+        return res.status(404).json({ message: 'POI not found' });
+      }
+      if (poi.completed) {
+        return res.status(400).json({ message: 'POI is already completed' });
+      }
+  
+      poi.completed = true;
+      await poi.save();
+  
+      // Update the team's score
+      const team = await Team.findById(teamId);
+      if (!team) {
+        return res.status(404).json({ message: 'Team not found' });
+      }
+  
+      team.score += scoreIncrement || 1; // Default increment is 1 if not provided
+      await team.save();
+  
+      res.status(200).json({ message: 'POI marked as completed and score updated', team });
+    } catch (error) {
+      console.error('Error completing POI:', error);
+      res.status(500).json({ message: 'Error completing POI', error: error.message });
+    }
+  });
+  
   
 
 module.exports = router;
