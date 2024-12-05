@@ -10,6 +10,8 @@ const TeamSchema = new mongoose.Schema({
             role: { type: String }
         },
     ],
+    poiIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'POI' }] // Link to multiple POIs
+
 
 
 }) 
