@@ -48,6 +48,17 @@ router.delete('/teams/:id', async (req, res) => {
     }
   });
   
+// Get All Members from Team
+router.get('/:id/members' , async (req, res) => {
+    try {
+        const response = await Team.findById(req.params.id);
+        res.status(200).json({ message: 'Retrieve Members Successfully', response });
+
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to get Members', details: error.message})
+        
+    }
+})
 
 // Add a Member to Team
 router.post('/:id/members', async (req, res) => {
@@ -80,7 +91,7 @@ router.delete('/:id/members/:memberid', async (req, res) => {
 });
 
 // Get Leaderboard: All Teams sorted by score
-router.get('/leaderboard', async (req, res) => {
+router.get('/teams/leaderboard', async (req, res) => {
     try {
       const teams = await Team.find().sort({ score: -1 }); // Sort teams by score in descending order
       res.status(200).json({ message: 'Leaderboard fetched successfully', teams });
